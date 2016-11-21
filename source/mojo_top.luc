@@ -1,11 +1,8 @@
 module mojo_top (
     input clk,              // 50MHz clock
     input rst_n,            // reset button (active low)
-<<<<<<< HEAD
     output io_led[5],         // 2 user controllable LEDs
-=======
-    output led [2],         // 2 user controllable LEDs
->>>>>>> c98ac4459797c5a4f57e312d9676e6f19fa2ae75
+
     input cclk,             // configuration clock, AVR ready when high
     output spi_miso,        // AVR SPI MISO
     input spi_ss,           // AVR SPI Slave Select
@@ -15,24 +12,13 @@ module mojo_top (
     input avr_tx,           // AVR TX (FPGA RX)
     output avr_rx,          // AVR RX (FPGA TX)
     input avr_rx_busy,       // AVR RX buffer full
-<<<<<<< HEAD
     output a,
     output b,
     output c,
     input sum,
     input carry,
     input io_dip[3]
-    
-=======
-    input button1,
-    input button2,
-    input button3,
-    input sum,
-    input carry,
-    output o1,
-    output o2,
-    output o3
->>>>>>> c98ac4459797c5a4f57e312d9676e6f19fa2ae75
+
   ) {
   
   sig rst;                  // reset signal
@@ -46,33 +32,21 @@ module mojo_top (
   always {
     reset_cond.in = ~rst_n; // input raw inverted reset signal
     rst = reset_cond.out;   // conditioned reset
-<<<<<<< HEAD
                     // turn LEDs off
     spi_miso = bz;          // not using SPI
     spi_channel = bzzzz;    // not using flags
     avr_rx = bz;            // not using serial         n1};    
     
-    io_led[0] = io_dip[0];
+    io_led[0] = io_dip[0]; //mapping switches for a mojo
     io_led[1] = io_dip[1];
     io_led[2] = io_dip[2];
     
-    a = io_dip[0];
-    b = io_dip[1];
-    c = io_dip[2];
+    a = io_dip[0]; //a input 
+    b = io_dip[1]; //b input
+    c = io_dip[2]; //c input
     
     io_led[3] = sum;
     io_led[4] = carry;
-=======
-    
-    led = 8h00;             // turn LEDs off
-    spi_miso = bz;          // not using SPI
-    spi_channel = bzzzz;    // not using flags
-    avr_rx = bz;            // not using serial port
-    o1 = 8x{button1};
-    o2 = 8x{button2};
-    o3 = 8x{button3};
-    led[1] = 8x{sum};
-    led[0] = 8x{carry};
->>>>>>> c98ac4459797c5a4f57e312d9676e6f19fa2ae75
+
   }
 }
