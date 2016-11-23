@@ -1,7 +1,7 @@
 module mojo_top (
     input clk,              // 50MHz clock
     input rst_n,            // reset button (active low)
-    output io_led[5],         // 2 user controllable LEDs
+    output io_led[5],         // 3 user controllable LEDs
 
     input cclk,             // configuration clock, AVR ready when high
     output spi_miso,        // AVR SPI MISO
@@ -23,6 +23,9 @@ module mojo_top (
   
   sig rst;                  // reset signal
   
+  //D flip flop to store the value. It's horrible 
+  dff counter[35](.clk(clk), .rst(rst));    
+  
   .clk(clk) {
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
@@ -37,16 +40,20 @@ module mojo_top (
     spi_channel = bzzzz;    // not using flags
     avr_rx = bz;            // not using serial         n1};    
     
-    io_led[0] = io_dip[0]; //mapping switches for a mojo
-    io_led[1] = io_dip[1];
-    io_led[2] = io_dip[2];
+    io_led[0] = counter.q[34]; //mapping LEDs for a mojo
+    io_led[1] = counter.q[33];
+    io_led[2] = counter.q[32];   
     
-    a = io_dip[0]; //a input 
-    b = io_dip[1]; //b input
-    c = io_dip[2]; //c input
+    //Selecting highest bits of counter for a,b & c. 
+    
+    a = counter.q[34]; //a input 
+    b = counter.q[33]; //b input
+    c = counter.q[32]; //c input
     
     io_led[3] = sum;
     io_led[4] = carry;
+    
+    counter.d = counter.q + 1; //increment state
 
   }
 }
